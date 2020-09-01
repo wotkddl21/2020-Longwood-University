@@ -1,0 +1,119 @@
+전역변수로 바꾸고
+
+go()
+back()
+
+path를 stack으로 구현
+path[100000];
+close[1000000];
+//initializing
+cur = path[];
+//push
+newnode =malloc();
+newnode->next = path->next;
+path = newnode;
+cur = newnode;
+
+//pop
+temp = path;
+if(temp!=NULL){
+	path = path->next;
+	free(temp);
+}
+go()하면 현재 path[cur]를 curwords로 복사
+curwords에 대한 새로운 path[cur+1] 또 다시 생성  //curwods와 1글자만 다른 단어들 push
+go(){
+	strcpy(curwords,path[cur].list);
+	strcpy(close[clonum],path[cur].list);
+	cur++;
+	clonum++;
+	for(i=0;i<listnum;i++){
+		for(j=0;j<strnum;j++){
+			if(curwords[j]==list[i][j]){
+				flag++;
+			}
+		}
+		if(flag==strnum-1){//push
+			newnode = malloc(sizeof(path));
+			strcpy(newnode->list,list[i]);
+			newnode->next = path[cur]->next;
+			path[cur] = newnode;
+		}
+		flag=0;
+	}
+}
+back()하면 이전 list path[i-1]의 next를 curwords로 복사 // pop(path[i-1]) 해서 curwods로 복사
+back(){
+	while(1){
+		if(cur<0){
+			printf("No ladder\n");
+			return 0;
+		}
+		temp = path[cur];
+		if(temp!=NULL){ // pop성공
+			path[cur] = path[cur]->next;
+			free(temp);
+			if(path[cur]!=NULL){
+				strcpy(curwords,path[cur]);
+				return 1;
+			}
+			else{
+				cur--;
+			}
+		}
+		else{
+			printf("No ladder\n");
+			return 0;
+		}
+	}
+	go();
+}
+
+
+전체 loop
+int compare=0; // success = 1, fail = 0
+while(1){
+	go();
+	if(strcmp(start,path[cur].list)==0){
+		
+		compare = 1;	
+		break;
+	}
+	else{
+		while(path[cur]!=NULL){
+			flag=0;
+			temp = path[cur];
+			path[cur] = path[cur]->next;
+			for(i=0;i<clonum;i++){
+				if(strcmp(path[cur].list,close[i])==0){
+					flag=1;
+					break;
+				}
+			}
+			if(flag==0){
+				if(strcmp(start,path[cur].list)==0){
+					compare=1;
+					break;
+				}
+				else{
+					strcpy(close[closum],path[cur].list);
+					closum++;
+				}
+			}
+		}
+	}
+	if(compare==0){// 이전 path에서 다음거 가져와야함
+	
+	}
+
+}
+
+
+
+
+없다면 계속 이전 list로 이동
+만약 모든 list다 봤다면 ladder없음...
+
+diff하나 증가해서 다시 확인
+
+위의 과정 모두 반복하다가, diff의 특정 값에서 모든 단어를 사용했다면 ladder없음... 종료
