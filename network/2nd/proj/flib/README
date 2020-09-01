@@ -1,0 +1,92 @@
+About my program.
+
+char** fl_list(const char* path);
+This function return the list of file names in path.
+Inside of function, it will read the path directory.
+If it is not directory,  the it will return NULL and the program is terminated.
+At first it will search the directory to get the number of files in the directory.
+And then it will store the name of files into (char** ret).
+And the last of ret becomes ************************.
+This is my signal for the end of list.
+This function is run at the beginning of program.
+
+char** fl_list_filter(const char* path,const cahr* prefix,const char*suffix)
+
+This function is same as fl_list without filtering skills.
+If you run the program with -f , the program will run this function not the fl_list.
+
+It will check the name of files.
+And if there are same part of prefix and suffix, it will store that filename into the list.
+
+int fl_count(char** files)
+This function will return the number of files.
+At fl_list, I made the last list be ***************.
+Through all of files, if there is ************, then this is the last position of list.
+Than we can get the number of files.
+
+inf fl_isDir(const char* name)
+It will use the struct stat and stat function to check this file is directory or not.
+If this file is directory, then it will return 1.
+And return 0 other.
+
+int fl_isExe(const char* name)
+At first I use the S_IEXEC, but it also returns 1 when the file is directory.
+So I added the S_ISDIR to ensure not to return 1 when the file is directory.
+
+int fl_isSym(const char*name)
+This function will use the S_ISLNK function.
+
+unsigned int fl_size(const char*name)
+This function will use the st_size which is the member of struct stat.
+
+
+unsigned int fl_size_r(const char*name)
+At first, this function will check the file is directory or not.
+If it is directory, open that directory and check all of files inside of it without . , .. and current directory.
+It will recursively call the function itself to get the size of total files.
+
+
+unsigned int fl_date(const char* name)
+It will return the st_mtime, which is the member of struct stat.
+
+void fl_sort_bySize(char** files)
+If you run the program with -s, the program will run this function to sort the list of file names by size.
+Inside of it, it will make the list of size of every file.
+While sorting the list of size, it will sort the list of filenames simuiltaneously.
+
+
+void fl_sort_byDate(char** files)
+If you run the program with -d, the program will run this function to sort the list of file names by last modification date.
+It is basically same as fl_sort_bySize without using the st_mtime rather than size.
+
+
+
+void fl_delete(char** files)
+This function will free files.
+At first, it will free every files[i].
+And then it will free files.
+
+void fl_formatDate(const char*filename,char*str)
+This function will generate the str of well-defined-structure.
+Cuz the st_mtime is the total seconds from 1970, it is hard for people to know what time it is.
+I will use the struct tm for making time be easy-to-look.
+struct tm* time;
+If I use the time = localtime() function, the time will store some members.
+time->tm_mon stores the month and time->tm_day stores the date and so on.
+With this structure, this function modifies the str.
+
+
+
+void fl_readablesize(unsigned int size, char* str)
+Since the st_size is in scale of byte, it is hard for people to look at it.
+This function will make the str easy-to-look with the size.
+I used the scale with 1000.
+At first I used 1024, but it is quite different from the real-computer work.
+I looked for some example, so I use the "files" in computer.
+It contains the total directory. So I can explore wherever I want to go.
+It also stores the size of every file.
+This size is in scale 1000.
+So I used the scale as 1000.
+
+The program will run this function for getting readable size from the real size.
+

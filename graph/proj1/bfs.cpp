@@ -1,0 +1,98 @@
+#include<iostream>
+#include<string>
+#include<time.h> //for random
+#include<cstdlib>
+
+
+int goose[1000]={0};
+
+
+typedef struct _player{
+	int position;
+	int stay;
+
+}Player;
+Player A,B;
+
+int turn=1;
+int count=0;
+bool first_A=true;
+bool first_B=true;
+
+int* history_dice1;
+int* history_dice2;
+
+int run_goose(int A,int dice1,int dice2){
+	int total=0;
+	int temp=0;
+	total = dice1+dice2;
+	A+=total;
+	if(A>63){
+		temp = A-63;
+		A = 63-temp;
+	}
+	else if(goose[A]==1){ // rule 3
+	A+=total;
+	}
+	switch(A){// rule for special location
+		case 6:
+			A = 12;
+			break;
+		case 19:
+			break;
+		case 31:
+			break;
+		case 42:
+			A = 39;
+			break;
+		case 52:
+			A= 3;
+			break;
+		case 59:
+			A = 1;
+			break;
+		default:
+			break;
+	}
+	return A;
+}
+
+int main(void){
+	int num=0;
+	int whosewin=0;
+	char input=0;
+goose[5]=goose[9]=goose[14]=goose[18]=goose[23]=goose[27]=goose[32]=goose[36]=goose[41]=goose[50]=goose[54]=goose[59]=1;
+	srand(time(NULL));
+	double totalnum=0;
+	double winnum1=0;
+	double probability=0.0;
+	double p[10000];
+	double i=0;
+	int dice1=0;
+	int dice2=0;
+	int  j=0;
+	int flag=0;
+	int t=0;
+	int k=0;
+	double temp1=0;
+	int path[64]={0};
+	int queue[1000000000]={0};
+	int queuenum=0;
+	A.position=0;
+	queue[0] = A.position;
+	queuenum=1;
+	//initial enqueue
+	while(queuenum){
+		for(j=1;j<7;j++){
+			for(k=1;k<7;k++){
+				queue[queuenum] = run_goose(1,j,k);
+			}
+
+		}
+	}
+
+
+
+return 0;
+
+}

@@ -1,0 +1,29 @@
+For dcurses_start_fullscreen(), I declared static struct termios stored as global variable
+"stored" stores the very original termios things.
+In dcurses_start_fullscreen(), it gets terminal options from "stored" with using tcgetattr()and copy to the termios "new". (new = stored)
+And with cfmakeraw(), set raw mode for new.
+Finally set current termios as "new" (tcsetattr(0,TCSANOW,&new))
+
+For dcurses_end_fullscreen(), I use the "stored" to reset current termios.
+It clears the screen with dcurses_clearScreen(); and move cursor to left top corner.
+
+For dcurses_setFont(),dcurses_fg,dcurses_bg I use nested if.
+
+Since there are a lot of options for pallet color, I use not "nest if" but %d for dcurses_bg_pallet(), dcurses_fg_pallet().
+
+For disable blink and reverse, I use printf("\e[0m"), which makes all of attributes reset.
+
+
+For dcurses_location, I use similar method for dcurses_start_fullscreen().
+To get the location of cursor, I have to call printf("\e[6n"); scanf("\e[%d;%dR",y,x);
+But, the terminal echos "\e[%d;%dR",which I don't want to see.
+So, set the terminal as raw and then call printf("\e[6n"); scanf("\e[%d;%dR",y,x); and then reset the terminal.
+
+For dcurses_moveTo(), I use printf("\e[%d;%dH",y,x)
+
+
+For dcurses_bounds, I move the cursor extremely far away.
+And then the cursor will be at right bottom corner.
+Get the position of cursor and the position(x,y) is (width,height) of this window.
+
+
