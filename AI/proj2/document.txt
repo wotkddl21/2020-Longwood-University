@@ -1,0 +1,26 @@
+To implement noisy-channel type correction system, I need to figure out what the noise is.
+Since the training data from mnist is "digit-looks-image", we need to find the feature of each digit.
+I checked some test case to get information what kind of (classification,correct label) is apparent.
+If I can reduce the number of common misclassification, then this program will be kind of noisy-channel type correction system.
+
+I declared the variables int miss[10][10].
+miss[classfication][correctlabel] means the number of misclassification from correctlabel.
+So miss[0][8] means that the label of data was 8,but the system classified the data as 0.
+When the accuracy is below 60%, the value of miss[8] row are too high.
+That means, if the program will find how to figure the digit "8", then the accuracy will be high.
+As training passes by, the value of miss[8] row get lower ( thanks to backpropogation ) and the accutacy also get higher.
+
+Since I just implemented one hidden layer, the accuracy of classification would be not that high.
+So I set my goal accuracy in test case as 80%.
+With 10 epoch, 0.8 learningrate and 100 perceptrons hidden layer, I made the accuracy over 85%.
+
+
+
+
+gcc -o proof proof.c -lm
+then run ./proof <epoch> <learningrate> <layernum> mnist/train-labels-idx1-ubyte mnist/train-images-idx3-ubyte mnist/t10k-labes-idx1-ubyte mnist/t10k-images-idx3-ubyte
+
+This probram will show you the table of miss[10][10] after 60000times of training, and the table of tmiss[10[10] which stores the misclassification of test.
+
+The specific commands for the whole program are written at README.txt.
+This document only focused on the "proof".
